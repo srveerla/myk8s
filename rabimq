@@ -1,0 +1,8 @@
+def send_message_to_rabbitmq(user_id):
+    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='user_created_queue')
+    channel.basic_publish(exchange='', routing_key='user_created_queue', body=str(user_id))
+
+    connection.close()
